@@ -7,5 +7,6 @@ const asyncHandler = (fn: Function) => (req: any, res: any, next: any) =>
 const router = Router();
 
 router.get("/getPeople", asyncHandler(FuncionarioController.getAllFuncionarios));
+router.get("/getPeople/:id", asyncHandler(FuncionarioController.getPeopleById));
 
 export default router;
