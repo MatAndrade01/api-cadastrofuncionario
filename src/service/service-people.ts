@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { PeopleModel } from '../model/people-model';
 import * as Repositories from '../repositories/repository-people';
 import * as HttpResponse from '../util/htttResponse';
@@ -40,9 +41,9 @@ export const createPeopleService = async(people: PeopleModel) => {
         const result = await Repositories.insertPeolpe(people);
 
         if(result) {
-            return HttpResponse.ok(result)
+            return HttpResponse.create()
         }else{
-            return HttpResponse.noContent()
+            return HttpResponse.badRequest(new Error("Falha ao criar pessoas!"))
         }
     }catch(error) {
         console.error('Erro ao inserir pessoa: ', error);
@@ -54,22 +55,22 @@ export const updatePeopleService = async(id: number, update: PeopleModel) => {
     try {
         const result = await Repositories.findAndModifyPeople(id, update);
         if(result){
-            return HttpResponse.ok(result);
+            return HttpResponse.okUpdate();
         }else {
-            return HttpResponse.noContent();
+            return HttpResponse.badRequest(new Error("Falha ao atualizar pessoa!"));
         }
     }catch (error) {
         console.error('Erro ao atualizar pessoa: ', error);
         throw new Error('Erro ao atualizar pessoa');
     }
-}
+};
 
 export const deletePeopleService = async(id:number) => {
     try {
         await Repositories.deleteOnePeople(id);
-        return HttpResponse.ok(id);
+        return HttpResponse.okDelete();
     
-      }catch (error) {
+    }catch (error) {
         if (error instanceof Error) {
           console.error('Erro ao deletar pessoas:', error.message);
           throw new Error(error.message);
@@ -77,5 +78,5 @@ export const deletePeopleService = async(id:number) => {
           console.error('Erro desconhecido:', error);
           throw new Error('Erro desconhecido ao deletar pessoa.');
         }
-      }
-}
+    }
+};
