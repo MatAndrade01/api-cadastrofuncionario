@@ -9,4 +9,5 @@ const router = Router();
 router.get("/getPeople", asyncHandler(PeopleController.getAllFuncionarios));
 router.get("/getPeople/:id", asyncHandler(PeopleController.getPeopleById));
 router.post("/createPeople", asyncHandler(PeopleController.creatPeople));
+router.patch("/updatePeople/:id", asyncHandler(PeopleController.updatePeople));
 export default router;

@@ -54,3 +54,31 @@ export const insertPeolpe = async (people: PeopleModel) => {
         throw new Error('Erro ao inserir pessoa no banco de dados');
     }
 }
+
+export const findAndModifyPeople = async(id:number, update: PeopleModel): Promise<PeopleModel> => {
+    try {
+        await client.query(
+            `UPDATE people SET name = ?, surname = ?, number_phone = ?, cpf = ?, rg = ?, uf = ?, zipcode = ?, address = ?,
+             house_number = ?, commercial_relationship = ? WHERE id = ?
+            `,
+            [update.name, update.surname, update.number_phone, update.cpf, update.rg, update.uf, update.zipcode, 
+                update.address, update.house_number, update.commercial_relationship, id
+            ]
+        );
+
+        const [result] = await client.query('SELECT * FROM people WHERE id = ?', [id]);
+
+        if(Array.isArray(result) && result.length > 0) {
+            return result[0] as PeopleModel;
+        }else {
+            throw new Error('Pessoa não encontrado');
+        }
+    }catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('Erro ao atualizar produto: ', error.message);
+          throw new Error('Erro ao atualizar produto no banco de dados');
+        }
+        console.error('Erro desconhecido ao atualizar produto: ', error);
+        throw new Error('Erro desconhecido ao atualizar produto');
+    }
+}

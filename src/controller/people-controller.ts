@@ -43,3 +43,19 @@ export const creatPeople = async(req: Request, res: Response) => {
         }
     }
 }
+
+export const updatePeople = async(req: Request, res: Response) => {
+    try {
+        const id = parseInt(req.params.id);
+        const peopleData = req.body;
+        const httpResponse = await Service.updatePeopleService(id, peopleData);
+        return res.status(httpResponse.statusCode).json(httpResponse.body);
+    }catch(error) {
+        if (error instanceof Error) {
+            console.error('Erro ao atualizar usuario:', error.message);
+            return res.status(500).json({
+              message: error.message || 'Erro desconhecido ao atualizar usuario.'
+            });
+        }
+    }
+}

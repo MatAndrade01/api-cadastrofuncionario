@@ -49,3 +49,17 @@ export const createPeopleService = async(people: PeopleModel) => {
         throw new Error('Erro ao inserir pessoa na base de dados');
     }
 }
+
+export const updatePeopleService = async(id: number, update: PeopleModel) => {
+    try {
+        const result = await Repositories.findAndModifyPeople(id, update);
+        if(result){
+            return HttpResponse.ok(result);
+        }else {
+            return HttpResponse.noContent();
+        }
+    }catch (error) {
+        console.error('Erro ao atualizar pessoa: ', error);
+        throw new Error('Erro ao atualizar pessoa');
+    }
+}
