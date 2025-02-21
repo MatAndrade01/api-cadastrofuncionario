@@ -1,6 +1,7 @@
 import { error } from "console";
 import client from "../config/datanase";
 import { PeopleModel } from "../model/people-model";
+import exp from "constants";
 
 export const findAllPeople = async () => {
     const [result] = await client.query('SELECT * FROM people');
@@ -80,5 +81,20 @@ export const findAndModifyPeople = async(id:number, update: PeopleModel): Promis
         }
         console.error('Erro desconhecido ao atualizar produto: ', error);
         throw new Error('Erro desconhecido ao atualizar produto');
+    }
+}
+
+export const deleteOnePeople = async(id: number) => {
+    try {
+        const [result] = await client.query('DELETE FROM people WHERE id = ?', [id]);
+
+        if((result as any).affectedRows === 0) {
+            throw new Error('Pessoa não caddastrada!');
+        }
+    }catch(error) {
+        if (error instanceof Error) {
+            console.error('Erro ao deletar produto:', error.message);
+            throw new Error(error.message);
+        }
     }
 }

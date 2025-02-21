@@ -28,7 +28,7 @@ export const getPeopleById = async(req: Request, res: Response) => {
             });
         }
     }
-}
+};
 
 export const creatPeople = async(req: Request, res: Response) => {
     try {
@@ -42,7 +42,7 @@ export const creatPeople = async(req: Request, res: Response) => {
             throw new Error(error.message);
         }
     }
-}
+};
 
 export const updatePeople = async(req: Request, res: Response) => {
     try {
@@ -58,4 +58,19 @@ export const updatePeople = async(req: Request, res: Response) => {
             });
         }
     }
-}
+};
+
+export const deletePeople = async(req: Request, res: Response) => { 
+    try {
+        const id = parseInt(req.params.id);
+        const httpResponse = await Service.deletePeopleService(id);
+        return res.status(httpResponse.statusCode).json(httpResponse.body);
+    }catch (error) {
+        if (error instanceof Error) {
+            console.error('Erro ao deletar pessoa:', error.message);
+            return res.status(500).json({
+              message: error.message || 'Erro desconhecido ao deletar pessoa.'
+            });
+        }
+    }
+};

@@ -63,3 +63,19 @@ export const updatePeopleService = async(id: number, update: PeopleModel) => {
         throw new Error('Erro ao atualizar pessoa');
     }
 }
+
+export const deletePeopleService = async(id:number) => {
+    try {
+        await Repositories.deleteOnePeople(id);
+        return HttpResponse.ok(id);
+    
+      }catch (error) {
+        if (error instanceof Error) {
+          console.error('Erro ao deletar pessoas:', error.message);
+          throw new Error(error.message);
+        } else {
+          console.error('Erro desconhecido:', error);
+          throw new Error('Erro desconhecido ao deletar pessoa.');
+        }
+      }
+}
