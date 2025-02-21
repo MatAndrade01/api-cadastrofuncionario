@@ -1,3 +1,4 @@
+import { PeopleModel } from '../model/people-model';
 import * as Repositories from '../repositories/repository-people';
 import * as HttpResponse from '../util/htttResponse';
 
@@ -18,7 +19,7 @@ export const getAllPeopleService = async () => {
 }
 
 
-export const getPeopleById = async (id:number) => {
+export const getPeopleByIdService = async (id:number) => {
     try{
         const result = await Repositories.findPeopleById(id);
 
@@ -33,3 +34,18 @@ export const getPeopleById = async (id:number) => {
         throw new Error('Erro ao recuperar pessoa da base de dados');
     }
 };
+
+export const createPeopleService = async(people: PeopleModel) => {
+    try {
+        const result = await Repositories.insertPeolpe(people);
+
+        if(result) {
+            return HttpResponse.ok(result)
+        }else{
+            return HttpResponse.noContent()
+        }
+    }catch(error) {
+        console.error('Erro ao inserir pessoa: ', error);
+        throw new Error('Erro ao inserir pessoa na base de dados');
+    }
+}
